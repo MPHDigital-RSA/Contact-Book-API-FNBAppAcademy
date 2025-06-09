@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home page</title>
+
+    <style>
+        img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body onload="fetchContacts()">
+
+    <table id="table">Contacts loading...</table>
+    <button id="refresh" type="button">Refresh</button>
+    <button id="addContact" type="button">Add Contact</button>
+
+    <script src="config.js"></script>
+    <script>
+        function fetchContacts() {
+            fetch(rootPath + "controller/get-contacts/")
+                .then(function (res) {
+                    return res.json();
+                })
+                .then(function (data) {
+                    displayOutput(data);
+                    console.log(data)
+                })
+        }
+
+        function displayOutput(data) {
+            let output = "";
+            document.getElementById("table").innerText = "";
+            data.forEach((contact) => {
+
+                output += `
+                
+                <tr>
+                    <td><img src="${rootPath}/controller/uploads/${contact.avatar}"/></td>
+                    <td><h5>${contact.firstname}</h5></td>
+                    <td><h5>${contact.lastname}</h5></td>
+                </tr>
+                
+                `
+            })
+
+            document.getElementById("table").innerHTML = output;
+        }
+    </script>
+</body>
+
+</html>
